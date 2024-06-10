@@ -9,8 +9,8 @@ github.com/eclipse/paho.mqtt.golang v1.3.3 h1:Fh1zsLniMFJByLqKrSB9ZRjkbpU0k1Xne2
 github.com/eclipse/paho.mqtt.golang v1.3.3/go.mod h1:eTzb4gxwwyWpqBUHGQZ4ABAV7+Jgm1PklsYT/eo8Hcc=
 github.com/eensymachines-in/errx v1.0.3-0.20240410092020-885a365b9ece h1:lMhwTqxGRLCfUmsV+52cBgAaqq5N19lOeuTF8JLBJKA=
 github.com/eensymachines-in/errx v1.0.3-0.20240410092020-885a365b9ece/go.mod h1:WQPRuyJcUg3MTQyUQ9HxyXtFHgLhhIJuYFxrQBHbsAs=
-github.com/eensymachines-in/utilities v1.5.6 h1:5Xj0iGPT/89k6dRLyN2otmC+Ntyag6rZ9sNeSc+ZYos=
-github.com/eensymachines-in/utilities v1.5.6/go.mod h1:cUdp32sbl6AaqfbafJ0zxBn7ZngT8o7S8KVLjq7FQ6w=
+github.com/eensymachines-in/utilities v1.5.5 h1:bcuYQpXGLRobw30XAYd5oSaPwCcQ7gQbd15lXQeVx48=
+github.com/eensymachines-in/utilities v1.5.5/go.mod h1:cUdp32sbl6AaqfbafJ0zxBn7ZngT8o7S8KVLjq7FQ6w=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
 github.com/gin-contrib/sse v0.1.0 h1:Y/yl/+YNO8GZSjAhjMsSuLt29uWRFHdHYUb5lYOV9qE=

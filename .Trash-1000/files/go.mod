@@ -1,11 +1,8 @@
 module github.com/eensymachines-in/telegnotify
 
-go 1.20
+go 1.22.3
 
-require (
-	github.com/eensymachines-in/utilities v1.5.6
-	github.com/sirupsen/logrus v1.8.0
-)
+require github.com/eensymachines-in/utilities v1.5.5
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.3.3 // indirect
@@ -26,6 +23,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
+	github.com/sirupsen/logrus v1.8.0 // indirect
 	github.com/streadway/amqp v1.1.0 // indirect
 	github.com/ugorji/go/codec v1.2.4 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect

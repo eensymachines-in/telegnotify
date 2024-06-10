@@ -6,47 +6,27 @@ import (
 	"os/exec"
 
 	"github.com/eensymachines-in/utilities"
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 func init() {
-	close := utilities.SetUpLog()
-	defer close()
+
 }
 
-// runShellScript pre written shell scripts on sh files can be run
-func runShellScript(scriptPath string) (string, error) {
-	// Create the command to run the shell script
-	cmd := exec.Command("/bin/bash", scriptPath)
+func runShellScript(scriptPath string, args ...string) (string, error) {
+	// Create the command to run the shell script with arguments
+	cmd := exec.Command("/bin/bash", append([]string{scriptPath}, args...)...)
 
-	// Create a buffer to capture the standard output
+	// Create buffers to capture the standard output and standard error
 	var out bytes.Buffer
+	var stderr bytes.Buffer
 	cmd.Stdout = &out
-	cmd.Stderr = &out
+	cmd.Stderr = &stderr
 
 	// Run the command
 	err := cmd.Run()
 	if err != nil {
-		return "", err
-	}
-
-	// Return the output as a string
-	return out.String(), nil
-}
-
-// runCommand Command with arguments run to get the output
-func runCommand(cmd string, args ...string) (string, error) {
-	// Create the command with its arguments
-	command := exec.Command(cmd, args...)
-
-	// Create a buffer to capture the standard output
-	var out bytes.Buffer
-	command.Stdout = &out
-
-	// Run the command
-	err := command.Run()
-	if err != nil {
-		return "", err
+		return "", fmt.Errorf("cmd.Run() failed with %s: %s", err, stderr.String())
 	}
 
 	// Return the output as a string
@@ -54,17 +34,24 @@ func runCommand(cmd string, args ...string) (string, error) {
 }
 
 func main() {
+	// Path to the shell script
+	logrus.Info("Now starting program")
+	close := utilities.SetUpLog()
+	defer close() // incase its a file output log, this shall close the same
 
-	log.Info("Starting service for telegram notifications")
-	defer log.Warn("now closing service for telegram notifications")
+	scriptPath := "./scripts/service_status.sh"
 
-	output, err := runCommand("echo", "-n", "Hello, world!")
+	// Arguments to pass to the shell script
+	args := []string{"aquapone.service"}
+
+	// Run the shell script with arguments
+	output, err := runShellScript(scriptPath, args...)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Println("Echo output:", output)
 
-	runShellScript("./scripts/service_status.sh")
-
+	// Print the output from the shell script
+	// mind the linefeed in the  print statement itself
+	fmt.Printf("Shell script output:%s\n", output)
 }
