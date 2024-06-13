@@ -1,12 +1,14 @@
 module github.com/eensymachines-in/telegnotify
 
-go 1.20
+go 1.21.0
+
+toolchain go1.22.3
 
 require (
-	github.com/eensymachines-in/patio v0.0.0-20240411082548-329da191c0fe
 	github.com/eensymachines-in/utilities v1.5.6
 	github.com/eensymachines-in/webpi-telegnotify v0.0.0-20240612092758-fe1c26a9636a
 	github.com/sirupsen/logrus v1.9.3
+
 )
 
 require (
@@ -16,6 +18,7 @@ require (
 	github.com/cloudwego/iasm v0.2.0 // indirect
 	github.com/eclipse/paho.mqtt.golang v1.3.3 // indirect
 	github.com/eensymachines-in/errx v1.0.3-0.20240410092020-885a365b9ece // indirect
+	github.com/eensymachines-in/patio v0.0.0-20240411082548-329da191c0fe // indirect
 	github.com/gabriel-vasile/mimetype v1.4.4 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.10.0 // indirect
@@ -23,11 +26,8 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.20.0 // indirect
 	github.com/goccy/go-json v0.10.3 // indirect
-	github.com/gofrs/uuid v4.4.0+incompatible // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
-	github.com/hashicorp/errwrap v1.1.0 // indirect
-	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
@@ -45,7 +45,6 @@ require (
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
 	go.mongodb.org/mongo-driver v1.14.0 // indirect
-	gobot.io/x/gobot v1.16.0 // indirect
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/crypto v0.23.0 // indirect
 	golang.org/x/net v0.25.0 // indirect
