@@ -41,8 +41,8 @@ jobs:
       - name: Clone telegnotify repository to Raspberry pi and compile it
         run: |
           ssh ${RASPBERRY_PI_UNAME}@${RASPBERRY_PI_IP} "
-          mkdir -p /home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify
-          cd /home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify
+          mkdir -p "/home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify"
+          cd "/home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify"
           if [ -z $(ls -A "/home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify") ]; then\
             git clone ${REPO_URL}\
           else\
