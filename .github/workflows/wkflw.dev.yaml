@@ -1,0 +1,52 @@
+name: Deploy to Raspberry Pi
+
+on:
+  push:
+    branches:
+      - nightly
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      RASPBERRY_PI_IP: ${{ secrets.RPI_IP_DEV }}
+      REPO_URL: ${{ env.GITHUB_SERVER_URL }}/${{ env.GITHUB_REPOSITORY }}
+      RASPBERRY_PI_UNAME: ${{ RASPBERRY_PI_UNAME }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH on actions container
+        run: |
+          mkdir -p ~/.ssh
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${RASPBERRY_PI_IP} >> ~/.ssh/known_hosts
+
+      # - name: Copy systemd unit file to Raspberry Pi
+      #   run: |
+      #     scp ./path/to/your/systemd.service pi@${RASPBERRY_PI_IP}:/home/pi/
+      - name: Get current branch name
+        id: get_branch
+        run: |
+          echo "Branch ref: $GITHUB_REF"
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          echo "Branch name: $BRANCH_NAME"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
+      - name: Clone telegnotify repository to Raspberry pi and compile it
+        run: |
+          ssh ${ RASPBERRY_PI_UNAME }@${RASPBERRY_PI_IP} "
+          mkdir -p /home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify
+          cd /home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify
+          if [ -z $(ls -A "/home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify") ]; then\
+            git clone ${REPO_URL}\
+          else\
+            git pull origin ${{ env.BRANCH_NAME }}
+          git checkout ${{ env.BRANCH_NAME }}
+          go build . -o /usr/local/bin/telegnotify
+          "

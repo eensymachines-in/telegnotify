@@ -1,6 +1,8 @@
 module github.com/eensymachines-in/telegnotify
 
-go 1.20
+go 1.21.0
+
+toolchain go1.22.3
 
 require (
 	github.com/eensymachines-in/patio v0.0.0-20240411082548-329da191c0fe

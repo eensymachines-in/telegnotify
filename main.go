@@ -24,14 +24,18 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// ScriptOutput : For any output from the script the format depends on how the script is configured
+// this interface can turn the output to unified interface that can be upsent to the api as notifications
 type ScriptOutput interface {
-	ToNotification() (models.DeviceNotifcn, error)
+	ToNotification() (map[string]interface{}, error)
 }
 
 /* implementations for ScriptOutput */
 type VitalStatsOutput string
 
-func (vso VitalStatsOutput) ToNotification() (models.DeviceNotifcn, error) {
+// Its a comma separated value slice $aqpstatus,$cfgstatus,$is_online,$usage,$upsince
+// This can turn it into a notification ready to be sent to the api
+func (vso VitalStatsOutput) ToNotification() (map[string]interface{}, error) {
 	if vso == "" {
 		return nil, fmt.Errorf("Empty VitalStatsOutput, cannot convert to Notification")
 	}
@@ -41,8 +45,10 @@ func (vso VitalStatsOutput) ToNotification() (models.DeviceNotifcn, error) {
 		log.Errorf("Unexpected number of vital stats %v", values)
 		return nil, fmt.Errorf("Unexpeted count of stats VitalStatsOutput: %d", len(values))
 	}
-	// TODO: device name to be extracted from the reg file
-	return models.Notification("Rpi0wdev test device @ Tejaura", DeviceMac, time.Now(), models.VitalStats(values[0], values[1], values[2], values[3], values[4])), nil
+	return map[string]interface{}{
+		"dttm":         time.Now(),
+		"notification": models.VitalStats(values[0], values[1], values[2], values[3], values[4]),
+	}, nil
 }
 
 type ShellScript struct {
@@ -107,17 +113,12 @@ func init() {
 	if err != nil {
 		log.Fatalf("failed to get mac address of the device: %s", err)
 	}
-	DeviceMac = out.String()
-	log.WithFields(log.Fields{
-		"mac address": DeviceMac,
-	}).Debug("device mac id read")
+	// BUG: when encountered an emoty device mac this should panic 
+	// If the device is not found on devicereg this shall exit 
 
-	// TODO: need to check withh devicereg service to know if the device is registered .
-	// incase the device ISNT registered this service shall exit prematurely
-	// No point in hhaving a iunregistered device send any notifications 
-	// from devicereg service we would get  
-	// - confirmation of the device registration 
-	// - device name 
+	DeviceMac = out.String()
+	fmt.Printf("Device MAC ID read in %s", DeviceMac)
+
 	checkEnvVars := []string{
 		"TELEGNOTIFY_BASEURL",
 		"CHECK_INTERVAL",
@@ -142,7 +143,7 @@ func init() {
 
 // upsendNotification : route notificaiton to a north bound api -  which then knows how to deal with the notification
 // not		: device notification that needs to send, error incase notification could not be send
-func upsendNotification(not models.DeviceNotifcn) error {
+func upsendNotification(not map[string]interface{}) error {
 	/* Url and the client */
 	cl := &http.Client{Timeout: 5 * time.Second}
 	// url := "http://aqua.eensymachines.in:30004/api/devices/b8:27:eb:43:59:f8/notifications?typ=vitals"
@@ -171,7 +172,7 @@ func upsendNotification(not models.DeviceNotifcn) error {
 		return fmt.Errorf("server not reachable %s", err)
 	}
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Unexpected server response: %d", resp.StatusCode)
+		return fmt.Errorf("unexpected server response: %d", resp.StatusCode)
 	}
 	return nil
 }
@@ -186,7 +187,7 @@ func main() {
 	Scripts := []*ShellScript{
 		NewShellScript("./scripts/vital_stats.sh", []string{}, NewVitalStatsOutput),
 	}
-	notfcnChn := make(chan models.DeviceNotifcn, 10) // single channel over which all task send their script output periodically
+	notfcnChn := make(chan map[string]interface{}, 10) // single channel over which all task send their script output periodically
 
 	// Main thread context
 	ctx, cancel := context.WithCancel(context.Background()) // use this context in all the task loops
@@ -214,7 +215,7 @@ func main() {
 			case not, ok := <-notfcnChn:
 				if ok {
 					// NOTE: ToMessageTxt - returns msg and the error alongside, so you would get to see <nil> being printed alongside a message
-					fmt.Println(not.ToMessageTxt())
+					fmt.Println(not["notification"].(models.TelegNotification).ToMessageTxt())
 					// Make arrangements to send the message to the api endpoint
 					if err := upsendNotification(not); err != nil {
 						// Case when the notificaiton could not be sent to the api
@@ -235,7 +236,7 @@ func main() {
 	they usually write on the notification channels */
 	for _, scrp := range Scripts {
 		wg.Add(1)
-		go func(script *ShellScript, notify chan models.DeviceNotifcn, ctx context.Context, wg *sync.WaitGroup) {
+		go func(script *ShellScript, notify chan map[string]interface{}, ctx context.Context, wg *sync.WaitGroup) {
 			defer wg.Done()
 			for {
 				select {

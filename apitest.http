@@ -1,0 +1,13 @@
+#### Simple test for device vital uploads 
+POST http://aqua.eensymachines.in:30004/api/devices/b8:27:eb:43:59:f8/notifications?typ=vitals
+Content-Type: application/json
+
+{
+    "notification":{
+        "aquapone_service": false, 
+        "cfgwatch_service": false,
+        "online":true,
+        "free_cpu":36,
+        "cpu_uptime": "2024-06-10 18:02:43"
+    }
+}
