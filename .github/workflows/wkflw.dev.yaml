@@ -13,7 +13,7 @@ jobs:
     env:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       RASPBERRY_PI_IP: ${{ secrets.RPI_IP_DEV }}
-      REPO_URL: ${{ github.GITHUB_SERVER_URL }}/${{ github.GITHUB_REPOSITORY }}
+      REPO_URL: ${{ github.server_url }}/${{ github.repository }}
       RASPBERRY_PI_UNAME: ${{ secrets.RASPBERRY_PI_UNAME }}
 
     steps:
