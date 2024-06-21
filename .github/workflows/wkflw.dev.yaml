@@ -37,9 +37,9 @@ jobs:
           echo ${{ secrets.SSH_PRIVATE_KEY }} > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           #ssh-keyscan -H ${{ secrets.RPI_IP_DEV }} >> ~/.ssh/known_hosts
-          # echo ${{ secrets.RASPBERRY_PI_UNAME }}
-          # echo ${{ secrets.RPI_IP_DEV }}
-          ssh -v  ${{ secrets.RASPBERRY_PI_UNAME }}@${{ secrets.RPI_IP_DEV }}
+          # # echo ${{ secrets.RASPBERRY_PI_UNAME }}
+          # # echo ${{ secrets.RPI_IP_DEV }}
+          # ssh -v  ${{ secrets.RASPBERRY_PI_UNAME }}@${{ secrets.RPI_IP_DEV }}
       # - name: Copy systemd unit file to Raspberry Pi
       #   run: |
       #     scp ./path/to/your/systemd.service pi@${RASPBERRY_PI_IP}:/home/pi/
