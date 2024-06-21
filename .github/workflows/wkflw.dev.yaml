@@ -20,26 +20,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: print out example job
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${RASPBERRY_PI_IP}
-          username: ${RASPBERRY_PI_UNAME}
-          key: ${SSH_PRIVATE_KEY}
-          port: 22
-          command_timeout: 30m
-          script: | 
-            echo "Nice Job!!!"
+      # - name: print out example job
+      #   uses: appleboy/ssh-action@v0.1.10
+      #   with:
+      #     host: ${RASPBERRY_PI_IP}
+      #     username: ${RASPBERRY_PI_UNAME}
+      #     key: ${SSH_PRIVATE_KEY}
+      #     port: 22
+      #     command_timeout: 30m
+      #     script: | 
+      #       echo "Nice Job!!!"
          
-      # - name: Set up SSH on actions container
-      #   run: |
-      #     mkdir -p ~/.ssh
-      #     echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
-      #     chmod 600 ~/.ssh/id_rsa
-      #     #ssh-keyscan -H ${RASPBERRY_PI_IP} >> ~/.ssh/known_hosts
-      #     echo "${RASPBERRY_PI_UNAME}"
-      #     echo "${RASPBERRY_PI_IP}"
-      #     ssh -v -o StrictHostKeyChecking=no ${RASPBERRY_PI_UNAME}@${RASPBERRY_PI_IP}
+      - name: Set up SSH on actions container
+        run: |
+          mkdir -p ~/.ssh
+          echo ${{ secrets.SSH_PRIVATE_KEY }} > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          #ssh-keyscan -H ${{ secrets.RPI_IP_DEV }} >> ~/.ssh/known_hosts
+          # echo ${{ secrets.RASPBERRY_PI_UNAME }}
+          # echo ${{ secrets.RPI_IP_DEV }}
+          ssh -v  ${{ secrets.RASPBERRY_PI_UNAME }}@${{ secrets.RPI_IP_DEV }}
       # - name: Copy systemd unit file to Raspberry Pi
       #   run: |
       #     scp ./path/to/your/systemd.service pi@${RASPBERRY_PI_IP}:/home/pi/
