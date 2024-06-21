@@ -25,8 +25,8 @@ jobs:
           mkdir -p ~/.ssh
           echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${RASPBERRY_PI_IP} >> ~/.ssh/known_hosts
-
+          # ssh-keyscan -H ${RASPBERRY_PI_IP} >> ~/.ssh/known_hosts
+          ssh -v ${RASPBERRY_PI_UNAME}@${RASPBERRY_PI_IP}
       # - name: Copy systemd unit file to Raspberry Pi
       #   run: |
       #     scp ./path/to/your/systemd.service pi@${RASPBERRY_PI_IP}:/home/pi/
