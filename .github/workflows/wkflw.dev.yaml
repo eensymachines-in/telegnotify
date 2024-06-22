@@ -23,13 +23,9 @@ jobs:
       - name: Set up SSH on actions container
         run: |
           mkdir -p ~/.ssh
-          echo ${{ secrets.SSH_PRIVATE_KEY }} > ~/.ssh/id_rsa
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 2402:e280:3e4d:402:111d:f882:6b20:3418 >> ~/.ssh/known_hosts
-          # # echo ${{ secrets.RASPBERRY_PI_UNAME }}
-          # # echo ${{ secrets.RPI_IP_DEV }}
-          # ssh -v  ${{ secrets.RASPBERRY_PI_UNAME }}@${{ secrets.RPI_IP_DEV }}
-
+          ssh-keyscan -H $RASPBERRY_PI_IP >> ~/.ssh/known_hosts
       # - name: Get current branch name
       #   id: get_branch
       #   run: |
