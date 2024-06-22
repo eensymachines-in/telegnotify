@@ -29,7 +29,7 @@ jobs:
       - name: Trace Raspberry Pi
         run: |
           sudo apt-get update && sudo apt-get install -y traceroute
-          traceroute  2409:4042:4e19:261c:fbf6:b7c1:47f5:53f4
+          traceroute  2402:e280:3e4d:402:ba26:4305:93dd:c8b1
 
       - name: Debug SSH Connection
         run: |
