@@ -19,15 +19,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-     
-      - name: Set up SSH on actions container
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: 2402:e280:3e4d:402:ba26:4305:93dd:c8b1
-          username: ${{ secrets.RASPBERRY_PI_UNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: whoami
+      
+      - name: Test internet connectivity
+        run: |
+          ping -c 4 google.com
+          curl -I https://github.com
+
+      - name: Debug SSH Connection
+        run: |
+          ssh -v $RASPBERRY_PI_UNAME@$RASPBERRY_PI_IP exit
         # run: |
         #   mkdir -p ~/.ssh
         #   echo $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
