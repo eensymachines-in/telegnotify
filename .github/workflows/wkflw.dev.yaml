@@ -25,6 +25,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          echo $RASPBERRY_PI_IP
           ssh-keyscan -H $RASPBERRY_PI_IP >> ~/.ssh/known_hosts
       # - name: Get current branch name
       #   id: get_branch
