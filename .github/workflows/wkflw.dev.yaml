@@ -20,8 +20,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       
-      - name: Check Internet Connectivity with Ping
-        run: ping -c 4 google.com
+      # - name: Check Internet Connectivity with Ping
+      #   run: ping -c 4 google.com
 
       - name: Check Internet Connectivity with Curl
         run: curl -I https://github.com
