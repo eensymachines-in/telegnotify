@@ -26,7 +26,6 @@ jobs:
           host: ${{ secrets.RPI_IP_DEV }}
           username: ${{ secrets.RASPBERRY_PI_UNAME }}
           password: "10645641993"
-          port: 22
           script: whoami
         # run: |
         #   mkdir -p ~/.ssh
