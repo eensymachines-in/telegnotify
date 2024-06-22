@@ -26,6 +26,9 @@ jobs:
       - name: Check Internet Connectivity with Curl
         run: curl -I https://github.com
 
+      - name: Ping Raspberry Pi
+        run: ping -c 4  ${{ secrets.RPI_IP_DEV }}
+
       - name: Debug SSH Connection
         run: |
           ssh -v $RASPBERRY_PI_UNAME@$RASPBERRY_PI_IP exit
