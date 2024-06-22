@@ -27,7 +27,9 @@ jobs:
         run: curl -I https://github.com
 
       - name: Trace Raspberry Pi
-        run: traceroute  2402:e280:3e4d:402:ba26:4305:93dd:c8b1
+        run: |
+          sudo apt-get update && sudo apt-get install -y traceroute
+          traceroute  2402:e280:3e4d:402:ba26:4305:93dd:c8b1
 
       - name: Debug SSH Connection
         run: |
