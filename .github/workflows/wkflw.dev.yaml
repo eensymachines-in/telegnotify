@@ -23,9 +23,10 @@ jobs:
       - name: Set up SSH on actions container
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.RPI_IP_DEV }}
+          host: 2402:e280:3e4d:402:ba26:4305:93dd:c8b1
           username: ${{ secrets.RASPBERRY_PI_UNAME }}
-          password: "10645641993"
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
           script: whoami
         # run: |
         #   mkdir -p ~/.ssh
