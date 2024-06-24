@@ -20,49 +20,61 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       
-      # - name: Check Internet Connectivity with Ping
-      #   run: ping -c 4 google.com
+      - name: Deploy to Raspberry Pi
+        uses: appleboy/ssh-action@v0.1.0
+        with:
+          host: ${{ secrets.RPI_IP_DEV }}
+          username: ${{ secrets.RASPBERRY_PI_UNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: whoami
+          # script: |
+          #   cd /path/to/your/repo
+          #   git pull origin main
+          #   sudo systemctl restart your-systemd-service
+      
+      # # - name: Check Internet Connectivity with Ping
+      # #   run: ping -c 4 google.com
 
-      - name: Check Internet Connectivity with Curl
-        run: curl -I https://github.com
+      # - name: Check Internet Connectivity with Curl
+      #   run: curl -I https://github.com
 
-      # - name: Trace Raspberry Pi
+      # # - name: Trace Raspberry Pi
+      # #   run: |
+      # #     sudo apt-get update && sudo apt-get install -y traceroute
+      # #     traceroute  2402:e280:3e4d:402:ba26:4305:93dd:c8b1
+
+      # - name: Debug SSH Connection
       #   run: |
-      #     sudo apt-get update && sudo apt-get install -y traceroute
-      #     traceroute  2402:e280:3e4d:402:ba26:4305:93dd:c8b1
-
-      - name: Debug SSH Connection
-        run: |
-          ssh -v $RASPBERRY_PI_UNAME@$RASPBERRY_PI_IP exit
-        # run: |
-        #   mkdir -p ~/.ssh
-        #   echo $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
-        #   cat ~/.ssh/id_rsa
-        #   chmod 600 ~/.ssh/id_rsa
-        #   ssh-keyscan -H $RASPBERRY_PI_IP >> ~/.ssh/known_hosts
-        #   # ssh-keyscan -H ${RASPBERRY_PI_IP}
-        # uses: webfactory/ssh-agent@v0.9.0
-        # with:
-        #   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     ssh -v $RASPBERRY_PI_UNAME@$RASPBERRY_PI_IP exit
+      #   # run: |
+      #   #   mkdir -p ~/.ssh
+      #   #   echo $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
+      #   #   cat ~/.ssh/id_rsa
+      #   #   chmod 600 ~/.ssh/id_rsa
+      #   #   ssh-keyscan -H $RASPBERRY_PI_IP >> ~/.ssh/known_hosts
+      #   #   # ssh-keyscan -H ${RASPBERRY_PI_IP}
+      #   # uses: webfactory/ssh-agent@v0.9.0
+      #   # with:
+      #   #   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
        
-      # - name: Get current branch name
-      #   id: get_branch
-      #   run: |
-      #     echo "Branch ref: $GITHUB_REF"
-      #     BRANCH_NAME=${GITHUB_REF#refs/heads/}
-      #     echo "Branch name: $BRANCH_NAME"
-      #     echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+      # # - name: Get current branch name
+      # #   id: get_branch
+      # #   run: |
+      # #     echo "Branch ref: $GITHUB_REF"
+      # #     BRANCH_NAME=${GITHUB_REF#refs/heads/}
+      # #     echo "Branch name: $BRANCH_NAME"
+      # #     echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
-      # - name: Clone telegnotify repository to Raspberry pi and compile it
-      #   run: |
-      #     ssh ${RASPBERRY_PI_UNAME}@${RASPBERRY_PI_IP} "
-      #     mkdir -p "/home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify"
-      #     cd "/home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify"
-      #     if [ -z $(ls -A "/home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify") ]; then\
-      #       git clone ${REPO_URL}\
-      #     else\
-      #       git pull origin ${{ env.BRANCH_NAME }}
-      #     git checkout ${{ env.BRANCH_NAME }}
-      #     go build . -o /usr/local/bin/telegnotify
-          # "
+      # # - name: Clone telegnotify repository to Raspberry pi and compile it
+      # #   run: |
+      # #     ssh ${RASPBERRY_PI_UNAME}@${RASPBERRY_PI_IP} "
+      # #     mkdir -p "/home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify"
+      # #     cd "/home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify"
+      # #     if [ -z $(ls -A "/home/${RASPBERRY_PI_UNAME}/source/github.com/eensymachines.in/telegnotify") ]; then\
+      # #       git clone ${REPO_URL}\
+      # #     else\
+      # #       git pull origin ${{ env.BRANCH_NAME }}
+      # #     git checkout ${{ env.BRANCH_NAME }}
+      # #     go build . -o /usr/local/bin/telegnotify
+      #     # "
