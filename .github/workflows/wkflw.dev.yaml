@@ -25,7 +25,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -6 -H ${RASPBERRY_PI_IP} >> ~/.ssh/known_hosts
+          ssh-keyscan -6 -H ${{ secrets.RPI_IP_DEV }} >> ~/.ssh/known_hosts
 
       - name: Test SSH connection using IPv6
-        run: ssh -6 -v ${RASPBERRY_PI_UNAME}@${RASPBERRY_PI_IP} exit
+        run: ssh -6 -v ${{ secrets.RASPBERRY_PI_UNAME }}@${{ secrets.RPI_IP_DEV }} exit
