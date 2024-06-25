@@ -19,13 +19,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
+
+      - name: Check SSH port with IPv6
+        run: nc -6 -zv ${{ secrets.RPI_IP_DEV }} 22
+
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -6 -H ${{ secrets.RPI_IP_DEV }} >> ~/.ssh/known_hosts
+          
 
       - name: Test SSH connection using IPv6
         run: ssh -6 -v ${{ secrets.RASPBERRY_PI_UNAME }}@${{ secrets.RPI_IP_DEV }} exit
