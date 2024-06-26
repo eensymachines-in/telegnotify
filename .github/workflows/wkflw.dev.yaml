@@ -20,12 +20,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Test IPv6 connectivity
-        run: ping6 -c 4 google.com
+      - name: Test IPv4 connectivity
+        run: ping -c 4 google.com
       
       - name: Test IPv6 connectivity
-        run: ping6 -c 6 google.com
-        
+        run: ping6 -c 4 google.com
+
       # - name: Check SSH port with IPv6
       #   run: nc -6 -zv ${{ secrets.RPI_IP_DEV }} 22
 
