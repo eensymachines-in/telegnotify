@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Test IPv4 connectivity
-        run: ping -c 4 google.com
+        run: ping -4 -c 4 google.com
       
       - name: Test IPv6 connectivity
         run: ping6 -c 4 google.com
